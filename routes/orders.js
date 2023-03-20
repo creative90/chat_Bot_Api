@@ -1,4 +1,4 @@
-const {getInfoAboutChatbot, addOrderItems, getOrderById, placeOrder, checkoutOrder, orderHistory, currentOrder, cancelOrder, selectItem, } = require('../controllers/orderController');
+const {getInfoAboutChatbot, placeOrder, checkoutOrder, orderHistory, currentOrder, cancelOrder, selectItem, } = require('../controllers/orderController');
 const router = require("express").Router();
 
 
@@ -6,17 +6,15 @@ const router = require("express").Router();
 // should we access the client replies via the request params or body?
 
 
- //router.route("/").get(getAllUsers)
+ 
 
 router.route('/').get(getInfoAboutChatbot);
-router.route('/').post(addOrderItems);
-//router.route('/1/:id').get(getOrderById);
 router.route('/1').get(placeOrder);
 router.route('/99').get(checkoutOrder);
 router.route('/98').get(orderHistory);
 router.route('/97').get(currentOrder);
 router.route('/0').get(cancelOrder);
 
-router.route('/1/:id').get(selectItem);
+router.route('1/:id').get(selectItem);
 
 module.exports = router;

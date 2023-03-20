@@ -10,8 +10,8 @@ const getInfoAboutChatbot = asyncHandler (async (req, res, next) => {
 
     res.status(200).json({
       status: 'success',
-      message: `Hi ${req.body.username}!👋, Welcome to chatbot.`,
-      data: {
+      message: `Hi ${req.body.username}!👋, Welcome to chatbot`,        
+       data: {
         instructions: [
           {
             option: 'a',
@@ -41,59 +41,7 @@ const getInfoAboutChatbot = asyncHandler (async (req, res, next) => {
   }
 });
 
-// @desc    Create new order
-// @route   POST /api/orders
-// @access  Private
-const addOrderItems = asyncHandler(async (req, res) => {
-  const {
-    orderItems,
-    id,
-    shippingAddress,
-    paymentMethod,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-  } = req.body
 
-  if (orderItems && orderItems.length === 0) {
-    res.status(400)
-    throw new Error('No order items')
-    return
-  } else {
-    const order = new Orders({
-      orderItems,
-      id,
-      shippingAddress,
-      paymentMethod,
-      itemsPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
-    })
-
-    const createdOrder = await order.save()
-
-    res.status(201).json(createdOrder)
-  }
-})
-
-// @desc    Get order by ID
-// @route   GET /api/orders/:id
-// @access  Private
-const getOrderById = asyncHandler(async (req, res) => {
-  const order = await Orders.findById(req.params.id).populate(
-    'id',
-    'items'
-  )
-
-  if (order) {
-    res.json(order)
-  } else {
-    res.status(404)
-    throw new Error('Order not found')
-  }
-})
 
 
 const placeOrder = asyncHandler(async (req, res, next) => {
@@ -118,15 +66,15 @@ const placeOrder = asyncHandler(async (req, res, next) => {
       id: orderId,
       merchant: req.session.username,
     });
-    res.json(Items)
-    // res.status(200).json({
-    //   status: 'success',
-    //   message:
-    //     'Started an Order, please select items using their respective numbers.',
-    //    data: 
-    //      Items,
+    //res.json(Items)
+    res.status(200).json({
+      status: 'success',
+      message:
+        'Started an Order, please select items using their respective numbers.',
+       data: 
+         Items,
        
-    // });
+    });
   } catch (error) {
     console.log(error);
   }
@@ -272,27 +220,27 @@ const cancelOrder = asyncHandler(async (req, res, next) => {
 
 const selectItem =asyncHandler(async (req, res, next) => {
   try {
-     // 1.) extract selected id (item) from request params
-    // const itemId =  req.params.id
-    // if(itemId){
-    //   res.json(itemId);
+    // 1.) extract selected id (item) from request params
+    const itemId =  req.params.id
+    if(itemId){
+      res.json(itemId);
   
-    // }else{
+    }else{
   
-    //   res.status(404)
-    //   throw new Error({message: 'Item not found'})
-    // }
+      res.status(404)
+      throw new Error({message: 'Item not found'})
+    }
    // const itemId = await Items.find(req.id).populate(
    // 'id',
   //  'items'
   //)
-    const itemId = Items.find(function (product) {product.id === req.params.id})
+   // const itemId = Items.find(function (product) {product.id === req.params.id})
     //const itemId  =  req.params.id
        //const {id } = itemId
-    if(itemId){
-      
-      product = JSON.stringify(itemId);
-      res.json(product)
+    // if(itemId){
+      //res.json(itemId)
+    //   product = JSON.stringify(itemId);
+    //   res.json(product)
       //console.log(itemId);
         //  res.status(200).json({
         //   status: 'success',
@@ -302,11 +250,11 @@ const selectItem =asyncHandler(async (req, res, next) => {
           //},
         //});
     
-       }else{
+      //  }else{
     
-        res.status(404)
-        throw new Error({message: 'Item not found'})
-      }
+      //   res.status(404)
+      //   throw new Error({message: 'Item not found'})
+      // }
 
     
 
@@ -359,4 +307,4 @@ const selectItem =asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = {getInfoAboutChatbot, addOrderItems, getOrderById, placeOrder, checkoutOrder, orderHistory, currentOrder, cancelOrder, selectItem, };
+module.exports = {getInfoAboutChatbot, placeOrder, checkoutOrder, orderHistory, currentOrder, cancelOrder, selectItem, };

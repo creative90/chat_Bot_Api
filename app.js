@@ -51,7 +51,7 @@ app.use(express.json())
 //app.use(cors)
 const whitelist = [
   'https://creative90.github.io',
-  'https://zeuhz-orderbotconsumer-droid.netlify.app',
+  'https://my-chatbot-api.onrender.com',
   'http://localhost:5501',
   'http://localhost:5500',
 ];

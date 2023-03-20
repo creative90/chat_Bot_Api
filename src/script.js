@@ -136,7 +136,7 @@ async function makeCallToAPI(id = "", endpoint = "", method = "GET", username) {
     method == "POST" ? (options.body = body) : "";
 
     const res = await fetch(
-      `http://localhost:5000/api/v1/chatbot/orders${
+      `https://my-chatbot-api.onrender.com${
         id ? "/" : ""
       }${id}${endpoint ? "/" : ""}${endpoint}`,
       options
