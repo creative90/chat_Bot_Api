@@ -6,15 +6,16 @@ const session = require('express-session');
 const bodyparser = require('body-parser');
 const passport = require('passport');
 const cors = require('cors');
-
-const io = require('socket.io')(http)
-const { notFound, errorHandler} = require('./middleware/errorMiddleware');
+const {Server} = require('socket.io')
+//const io = require('socket.io')(http)
+//const { notFound, errorHandler} = require('./middleware/errorMiddleware');
 
 const orderRouter = require('./routes/orders');
 const userRouter = require('./routes/users');
 //const itemRouter = require('./routes/items');
 
 const MongoStore = require('connect-mongo');
+const { connection } = require('mongoose');
 
 
 
@@ -24,9 +25,16 @@ const app = express();
 
 const PORT = process.env.PORT;
 
+const options = {
+cors: true,
+
+origin: ['http://localhost:5000']
+
+}
+
 //creat new connection
 
-io.on('connection', socket =>{})
+//io.on('connection', socket =>{})
 
 //route
 
@@ -37,7 +45,15 @@ io.on('connection', socket =>{})
 
 
 //setting the public folder as the static folder
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'src')));
+app.use(express.static('./src'))
+
+app.get('/', (req,res) =>{
+
+res.sendFile('index.html')
+
+})
+
 
 // using morgan to log incoming requests' type, in the 'dev' environment
 if ((process.env.NODE_ENV = 'development')) {
@@ -48,12 +64,15 @@ if ((process.env.NODE_ENV = 'development')) {
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.json())
-//app.use(cors)
+
+
+
+
 const whitelist = [
   'https://creative90.github.io',
   'https://my-chatbot-api.onrender.com',
   'http://localhost:5501',
-  'http://localhost:5500',
+  'http://localhost:5000',
 ];
 
 //  Implementing CORS
@@ -112,12 +131,17 @@ app.use('*', (req, res, next) => {
 });
 
 // use error handler middleware
-app.use(errorHandler)
-app.use(notFound)
+//app.use(errorHandler)
+//app.use(notFound)
 
 
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
   console.log(`listening successfully on PORT ${process.env.PORT}`);
 });
+  
+const io = new Server(server, options)
 
+io.on = ('connection', socket => {
+  socket.on ("message:", message => console.log(message))
+})
 module.exports = app;

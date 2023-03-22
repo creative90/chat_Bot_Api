@@ -1,3 +1,8 @@
+const io = require('socket.io-client')
+
+const socket = require('http://localhost:5000')
+
+
 const main = document.querySelector(".main");
 const overlay = document.querySelector(".overlay");
 const inputBoard = document.querySelector(".input-board");

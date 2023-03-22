@@ -71,9 +71,9 @@ const placeOrder = asyncHandler(async (req, res, next) => {
       status: 'success',
       message:
         'Started an Order, please select items using their respective numbers.',
-       data: 
+       data: {
          Items,
-       
+       }
     });
   } catch (error) {
     console.log(error);
@@ -221,24 +221,25 @@ const cancelOrder = asyncHandler(async (req, res, next) => {
 const selectItem =asyncHandler(async (req, res, next) => {
   try {
     // 1.) extract selected id (item) from request params
-    const itemId =  req.params.id
-    if(itemId){
-      res.json(itemId);
+   // const itemId =  req.params.id
+    // if(itemId){
+    //   res.json(itemId);
+    
   
-    }else{
+    //  }else{
   
-      res.status(404)
-      throw new Error({message: 'Item not found'})
-    }
+    //   res.status(404)
+    //   throw new Error({message: 'Item not found'})
+    //  }
    // const itemId = await Items.find(req.id).populate(
    // 'id',
   //  'items'
   //)
-   // const itemId = Items.find(function (product) {product.id === req.params.id})
+    const itemId = Items.find(function (product) {product.id === req.params.id})
     //const itemId  =  req.params.id
        //const {id } = itemId
-    // if(itemId){
-      //res.json(itemId)
+    if(itemId){
+      res.json(itemId)
     //   product = JSON.stringify(itemId);
     //   res.json(product)
       //console.log(itemId);
@@ -250,11 +251,11 @@ const selectItem =asyncHandler(async (req, res, next) => {
           //},
         //});
     
-      //  }else{
+       }else{
     
-      //   res.status(404)
-      //   throw new Error({message: 'Item not found'})
-      // }
+        res.status(404)
+        throw new Error({message: 'Item not found'})
+      }
 
     
 
