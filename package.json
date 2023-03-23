@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "A chat bot application to assist restaurant's client in placing orders.",
   "main": "app.js",
-  "proxy": "zeuhz-droid.github",
+  
   "scripts": {
     "start": "nodemon app.js"
   },
-  "author": "zeuhzDroid",
+  "author": "Wilson Ezeibekwe",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",

@@ -46,7 +46,7 @@ origin: ['http://localhost:5000']
 
 //setting the public folder as the static folder
 //app.use(express.static(path.join(__dirname, 'src')));
-app.use(express.static('./src'))
+app.use(express.static('./dist'))
 
 app.get('/', (req,res) =>{
 
@@ -116,7 +116,7 @@ app.use(passport.initialize()); //initialize passport
 app.use(passport.session()); //initialize session with passport
 
 
-app.use('/api/v1/chatbot/orders', orderRouter);
+app.use('/api/v1/chatbot', orderRouter);
 app.use('/api/v1/chatbot/users', userRouter);
 //app.use('/api/v1/chatbot/items', itemRouter);
 

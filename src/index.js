@@ -1,6 +1,6 @@
 const io = require('socket.io-client')
 
-const socket = require('http://localhost:5000')
+const socket = io('http://localhost:5000')
 
 
 const main = document.querySelector(".main");
@@ -130,9 +130,9 @@ async function makeCallToAPI(id = "", endpoint = "", method = "GET", username) {
         "Content-Type": "application/json",
         Accept: "application/json",
         "Access-Control-Allow-Origin":
-        //  "https://zeuhz-orderbotconsumer-droid.netlify.app",
-        
-        "https://localhost:5000/api/v1/chatbot/orders",
+    
+        // github.io
+        "https://localhost:5000/api/v1/chatbot",
       },
     };
 

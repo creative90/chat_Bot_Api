@@ -238,11 +238,11 @@ const selectItem =asyncHandler(async (req, res, next) => {
     const itemId = Items.find(function (product) {product.id === req.params.id})
     //const itemId  =  req.params.id
        //const {id } = itemId
-    if(itemId){
-      res.json(itemId)
+    // if(itemId){
+    //  res.json(itemId)
     //   product = JSON.stringify(itemId);
     //   res.json(product)
-      //console.log(itemId);
+     // console.log(itemId?.amount);
         //  res.status(200).json({
         //   status: 'success',
         //   message: 'item selected',
@@ -251,11 +251,11 @@ const selectItem =asyncHandler(async (req, res, next) => {
           //},
         //});
     
-       }else{
+      //  }else{
     
-        res.status(404)
-        throw new Error({message: 'Item not found'})
-      }
+      //   res.status(404)
+      //   throw new Error({message: 'Item not found'})
+      // }
 
     
 

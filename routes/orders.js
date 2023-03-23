@@ -15,6 +15,6 @@ router.route('/98').get(orderHistory);
 router.route('/97').get(currentOrder);
 router.route('/0').get(cancelOrder);
 
-router.route('1/:itemId').get(selectItem);
+router.route('/1/:id').get(selectItem);
 
 module.exports = router;
