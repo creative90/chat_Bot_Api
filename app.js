@@ -25,12 +25,12 @@ const app = express();
 
 const PORT = process.env.PORT;
 
-// const options = {
-// cors: true,
+const options = {
+cors: true,
 
-// origin: ['http://localhost:5000']
+origin: ['http://localhost:5000']
 
-// }
+}
 
 //creat new connection
 
@@ -76,21 +76,21 @@ const whitelist = [
   
 ];
 
-app.use(cors())
+
 
 //  Implementing CORS
 app.use(
   cors({
-    origin: whitelist,
+    origin: '*',
     credentials: true,
     methods: 'GET, POST',
-    allowedHeaders: [
-    //  'Access-Control-Allow-Origin',
-      'Content-Type',
-      'Authorization',
-    ],
-  })
-);
+     allowedHeaders: [
+   'Access-Control-Allow-Origin', 
+   'Content-Type',
+  'Authorization',
+ ],
+ })
+ );
 
 //  creating in memory sessions for our clients to stay recognized by the server.
 
