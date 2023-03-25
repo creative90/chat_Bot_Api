@@ -125,8 +125,8 @@ async function makeCallToAPI(id = "", endpoint = "", method = "GET", username) {
     const options = {
       method,
       mode: "cors",
-      credentials: "include",
-      withCredentials: true,
+     // credentials: "include",
+      //withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

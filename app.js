@@ -82,13 +82,13 @@ const whitelist = [
 app.use(
   cors({
     origin: '*',
-    credentials: true,
+  //  credentials: true,
     methods: 'GET, POST',
-     allowedHeaders: [
-   'Access-Control-Allow-Origin', 
-   'Content-Type',
-  'Authorization',
- ],
+//      allowedHeaders: [
+//    'Access-Control-Allow-Origin', 
+//    'Content-Type',
+//   'Authorization',
+//  ],
  })
  );
 
