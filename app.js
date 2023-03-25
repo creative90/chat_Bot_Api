@@ -25,12 +25,12 @@ const app = express();
 
 const PORT = process.env.PORT;
 
-const options = {
-cors: true,
+// const options = {
+// cors: true,
 
-origin: ['http://localhost:5000']
+// origin: ['http://localhost:5000']
 
-}
+// }
 
 //creat new connection
 
@@ -71,9 +71,12 @@ app.use(express.json())
 const whitelist = [
   'https://creative90.github.io',
   'https://my-chatbot-api.onrender.com',
-  'http://localhost:5501',
   'http://localhost:5000',
+  
+  
 ];
+
+app.use(cors())
 
 //  Implementing CORS
 app.use(
@@ -82,7 +85,7 @@ app.use(
     credentials: true,
     methods: 'GET, POST',
     allowedHeaders: [
-      'Access-Control-Allow-Origin',
+    //  'Access-Control-Allow-Origin',
       'Content-Type',
       'Authorization',
     ],
@@ -139,7 +142,7 @@ const server = app.listen(process.env.PORT, () => {
   console.log(`listening successfully on PORT ${process.env.PORT}`);
 });
   
-const io = new Server(server, options)
+const io = new Server(server)
 
 io.on = ('connection', socket => {
   socket.on ("message:", message => console.log(message))

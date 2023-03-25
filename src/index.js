@@ -100,6 +100,7 @@ formChatbox.addEventListener("submit", async (e) => {
 function showMenu() {
   navMenu.classList.remove("hide-menu");
   navMenu.classList.add("show-menu");
+  socket.emit("message", inputBoard.value)
 }
 
 function hideMenu() {
@@ -132,7 +133,7 @@ async function makeCallToAPI(id = "", endpoint = "", method = "GET", username) {
         "Access-Control-Allow-Origin":
     
         // github.io
-        "https://localhost:5000/api/v1/chatbot",
+        "http://localhost:5000",
       },
     };
 
@@ -141,10 +142,12 @@ async function makeCallToAPI(id = "", endpoint = "", method = "GET", username) {
     method == "POST" ? (options.body = body) : "";
 
     const res = await fetch(
-      `https://my-chatbot-api.onrender.com${
+      `http://localhost:5000${
         id ? "/" : ""
       }${id}${endpoint ? "/" : ""}${endpoint}`,
+
       options
+      
     );
 
     return await res.json();
