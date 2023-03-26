@@ -7,8 +7,10 @@ const bodyparser = require('body-parser');
 const passport = require('passport');
 const cors = require('cors');
 const {Server} = require('socket.io')
+const logger = require('./logger/logger');
+const httpLogger = require('./logger/httpLogger');
 //const io = require('socket.io')(http)
-//const { notFound, errorHandler} = require('./middleware/errorMiddleware');
+const { notFound, errorHandler} = require('./middleware/errorMiddleware');
 
 const orderRouter = require('./routes/orders');
 const userRouter = require('./routes/users');
@@ -32,45 +34,29 @@ origin: ['http://localhost:5000']
 
 }
 
-//creat new connection
-
-//io.on('connection', socket =>{})
-
-//route
-
-// app.get('/',(req, res)=>{
-
-//   res.sendFile(path.join(__dirname, 'src/index.html'))
-// })
-
-
-//setting the public folder as the static folder
-//app.use(express.static(path.join(__dirname, 'src')));
-app.use(express.static('./dist'))
-
-app.get('/', (req,res) =>{
-
-res.sendFile('index.html')
-
-})
-
-
+app.use(express.static(path.join(__dirname, 'dist')));
 // using morgan to log incoming requests' type, in the 'dev' environment
 if ((process.env.NODE_ENV = 'development')) {
   app.use(morgan('dev'));
 }
 
+
 // using express library to gain access to body of request sent by clients
+app.use(httpLogger);
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.json())
 
-
+process.on('uncaughtException', (err) => {
+  logger.info('UNHANDLED EXCEPTION! 💥 Shutting Down');
+  process.exit(1);
+});
 
 
 const whitelist = [
   'https://creative90.github.io',
   'https://my-chatbot-api.onrender.com',
+  'https://my-chatbot-api.onrender.com/api/v1/chatbot',
   'http://localhost:5000',
   
   
@@ -81,14 +67,14 @@ const whitelist = [
 //  Implementing CORS
 app.use(
   cors({
-    origin: '*',
-  //  credentials: true,
+    origin: whitelist,
+   credentials: true,
     methods: 'GET, POST',
-//      allowedHeaders: [
-//    'Access-Control-Allow-Origin', 
-//    'Content-Type',
-//   'Authorization',
-//  ],
+     allowedHeaders: [
+  'Access-Control-Allow-Origin', 
+   'Content-Type',
+  'Authorization',
+  ],
  })
  );
 
@@ -123,6 +109,10 @@ app.use('/api/v1/chatbot', orderRouter);
 app.use('/api/v1/chatbot/users', userRouter);
 //app.use('/api/v1/chatbot/items', itemRouter);
 
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'index.html'));
+});
+
 app.use('*', (req, res, next) => {
   res.status(404).json({
     status: 'fail',
@@ -133,9 +123,9 @@ app.use('*', (req, res, next) => {
   );
 });
 
-// use error handler middleware
-//app.use(errorHandler)
-//app.use(notFound)
+//use error handler middleware
+app.use(errorHandler)
+app.use(notFound)
 
 
 const server = app.listen(process.env.PORT, () => {
@@ -147,4 +137,12 @@ const io = new Server(server)
 io.on = ('connection', socket => {
   socket.on ("message:", message => console.log(message))
 })
+
+process.on('unhandledRejection', (err) => {
+  logger.info('UNHANDLED REJECTION! 💥 Shutting Down');
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
 module.exports = app;
