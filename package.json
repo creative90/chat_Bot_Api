@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A chat bot application to assist restaurant's client in placing orders.",
   "main": "app.js",
-  "proxy": "creative90.github.io",
+  "proxy": "creative90.github",
   "scripts": {
     "start": "nodemon app.js"
   },
@@ -19,6 +19,7 @@
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
     "express-session": "^1.17.3",
+    "http-proxy-middleware": "^2.0.6",
     "logger": "^0.0.1",
     "mongoose": "^7.0.0",
     "morgan": "^1.10.0",

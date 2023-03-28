@@ -9,6 +9,7 @@ const router = require("express").Router();
  
 
 router.route('/').get(getInfoAboutChatbot);
+router.route('/').post(getInfoAboutChatbot);
 router.route('/1').get(placeOrder);
 router.route('/99').get(checkoutOrder);
 router.route('/98').get(orderHistory);

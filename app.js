@@ -6,16 +6,11 @@ const session = require('express-session');
 const bodyparser = require('body-parser');
 const passport = require('passport');
 const cors = require('cors');
-const {Server} = require('socket.io')
 const logger = require('./logger/logger');
 const httpLogger = require('./logger/httpLogger');
-//const io = require('socket.io')(http)
 const { notFound, errorHandler} = require('./middleware/errorMiddleware');
-
 const orderRouter = require('./routes/orders');
 const userRouter = require('./routes/users');
-//const itemRouter = require('./routes/items');
-
 const MongoStore = require('connect-mongo');
 const { connection } = require('mongoose');
 
@@ -27,14 +22,9 @@ const app = express();
 
 const PORT = process.env.PORT;
 
-const options = {
-cors: true,
 
-origin: ['http://localhost:5000']
 
-}
-
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'public')));
 // using morgan to log incoming requests' type, in the 'dev' environment
 if ((process.env.NODE_ENV = 'development')) {
   app.use(morgan('dev'));
@@ -56,8 +46,8 @@ process.on('uncaughtException', (err) => {
 const whitelist = [
   'https://creative90.github.io',
   'https://my-chatbot-api.onrender.com',
-  'https://my-chatbot-api.onrender.com/api/v1/chatbot',
-  'http://localhost:5000',
+  'http://localhost:5501',
+  'http://localhost:5500',
   
   
 ];
@@ -73,8 +63,8 @@ app.use(
      allowedHeaders: [
   'Access-Control-Allow-Origin', 
    'Content-Type',
-  'Authorization',
-  ],
+ 'Authorization',
+ ],
  })
  );
 
@@ -89,13 +79,13 @@ const sessionOptions = {
   saveUninitialized: true,
   store: MongoStore.create({
     mongoUrl: process.env.DATABASE_URL,
-    touchAfter: 2 * 3600,
+    touchAfter: 1 * 3600,
   }),
   cookie: {
     name: 'orderBot',
     secure: true,
     httpOnly: true,
-    sameSite: 'none',
+    sameSite: true,
     maxAge: 1 * 60 * 60 * 1000,
   },
 };
@@ -123,20 +113,23 @@ app.use('*', (req, res, next) => {
   );
 });
 
+app.use((err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
+  });
+});
 //use error handler middleware
 app.use(errorHandler)
 app.use(notFound)
 
 
-const server = app.listen(process.env.PORT, () => {
+ const server = app.listen(process.env.PORT, () => {
   console.log(`listening successfully on PORT ${process.env.PORT}`);
 });
   
-const io = new Server(server)
-
-io.on = ('connection', socket => {
-  socket.on ("message:", message => console.log(message))
-})
 
 process.on('unhandledRejection', (err) => {
   logger.info('UNHANDLED REJECTION! 💥 Shutting Down');

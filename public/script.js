@@ -127,7 +127,7 @@ async function makeCallToAPI(id = '', endpoint = '', method = 'GET', username) {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         'Access-Control-Allow-Origin':
-          '"https://my-chatbot-api.onrender.com"',
+          'https://my-chatbot-api.onrender.com',
       },
     };
 
